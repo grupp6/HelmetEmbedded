@@ -101,7 +101,7 @@ namespace Helmet
             byte[] tmp;
             if (accidentDetection.addData(yAxisGs, yAxisGs, zAxisGs))
                 // Crash detected => Send alarm
-                tmp = DataUtil.alarm(accidentDetection.getSeverity());
+                tmp = DataUtil.alarmToJson(accidentDetection.getSeverity());
             else
                 // Crash NOT detected => Send accelerometer data samples
                 tmp = DataUtil.accDataToJson(yAxisGs, yAxisGs, zAxisGs);
