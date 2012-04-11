@@ -15,13 +15,17 @@ namespace Helmet
         private static int accTimerPeriod = 100;
         // Timer used for reading accelerometer data
         private static Timer timer;
+        // Accelerometer manager
         private static ADXL345 accel;
+        // Bluetooth communication
         private static SerialPort serial;
         // Handles accident detection
         private static AccidentDetection accidentDetection;
         // Threshold value for accidentDetection
         private static double sumThreshold = 9;
         private static int idod = 0;
+        
+        // Temporary variebles for accelerometer samples
         private static double yAxisGs;
         private static double xAxisGs;
         private static double zAxisGs;
