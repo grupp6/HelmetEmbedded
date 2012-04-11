@@ -17,6 +17,13 @@ namespace Helmet
         // Timer used for reading accelerometer data
         private static Timer timer;
 
+        // Handles accident detection
+        private static AccidentDetection accidentDetection;
+        // Threshold value for accidentDetection
+        private static double sumThreshold = 9;
+
+        
+
         public static void Main()
         {
             // Create a SerialPort for the Bluetooth module
@@ -61,6 +68,7 @@ namespace Helmet
         {
             if (timer == null)
                 timer = new Timer(readAccelerometerData, null, 0, accTimerPeriod);
+            accidentDetection = new AccidentDetection(sumThreshold);
             // TODO What is timer is already started?
         }
 

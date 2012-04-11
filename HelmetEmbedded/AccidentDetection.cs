@@ -18,7 +18,6 @@ namespace Helmet
                 return true;
             return
                 false;
-            
         }
 
         private double abs(double val)
