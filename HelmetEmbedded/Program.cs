@@ -23,7 +23,6 @@ namespace Helmet
         private static AccidentDetection accidentDetection;
         // Threshold value for accidentDetection
         private static double sumThreshold = 9;
-        private static int idod = 0;
         
         // Temporary variebles for accelerometer samples
         private static double yAxisGs;
