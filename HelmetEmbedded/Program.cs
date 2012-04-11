@@ -32,7 +32,7 @@ namespace Helmet
             serial.Open();
             // Listen for incoming data on serial (Bluetooth)
             serial.DataReceived += new SerialDataReceivedEventHandler(serialDataReceived);
-
+            
             // Initialize the accelerometer
             initADXL345();
 
