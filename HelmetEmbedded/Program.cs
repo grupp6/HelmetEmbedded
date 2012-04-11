@@ -85,6 +85,7 @@ namespace Helmet
 
         private static void readAccelerometerData(object o)
         {
+            // Read data from accelerometer
             accel.ReadAllAxis();
             yAxisGs = accel.ScaledYAxisG;
             xAxisGs = accel.ScaledXAxisG;
@@ -92,9 +93,12 @@ namespace Helmet
             
             byte[] tmp;
             if (accidentDetection.addData(yAxisGs, yAxisGs, zAxisGs))
+                // Crash detected => Send alarm
                 tmp = DataUtil.alarm(accidentDetection.getSeverity());
             else
+                // Crash NOT detected => Send accelerometer data samples
                 tmp = DataUtil.accDataToJson(yAxisGs, yAxisGs, zAxisGs);
+            // Send data over Bluetooth
             serial.Write(tmp, 0, tmp.Length);
         }
     }
