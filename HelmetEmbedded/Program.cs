@@ -41,6 +41,10 @@ namespace Helmet
             
             // Initialize the accelerometer
             initADXL345();
+            
+            // Start sampling and crash detection
+            // PLEASE NOTE! This should be done remotely, this is just a
+            // temporary solution.
             start();
 
 
