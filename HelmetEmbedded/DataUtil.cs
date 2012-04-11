@@ -9,9 +9,19 @@ namespace Helmet
         {
             // TODO Optimize?
             string json = "";
-            json += "{\"accX\":" + x.ToString() + ",";
+            json += "{\"type\":\"acc_data\",";
+            json += "\"accX\":" + x.ToString() + ",";
             json += "\"accY\":" + y.ToString() + ",";
             json += "\"accZ\":" + z.ToString() + "}";
+            return stringToByteArray(json);
+        }
+
+        public static byte[] alarm(byte severity)
+        {
+            // TODO Optimize?
+            string json = "";
+            json += "{\"type\":\"alarm\",";
+            json += "\"severity\":" + severity.ToString() + "}";
             return stringToByteArray(json);
         }
 

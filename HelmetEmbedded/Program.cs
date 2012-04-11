@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using LoveElectronics.Sensors.Accelerometers;
-using LoveElectronics.Resources;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Hardware;
 using SecretLabs.NETMF.Hardware;
@@ -16,18 +15,22 @@ namespace Helmet
         private static int accTimerPeriod = 100;
         // Timer used for reading accelerometer data
         private static Timer timer;
-
+        private static ADXL345 accel;
+        private static SerialPort serial;
         // Handles accident detection
         private static AccidentDetection accidentDetection;
         // Threshold value for accidentDetection
         private static double sumThreshold = 9;
-
+        private static int idod = 0;
+        private static double yAxisGs;
+        private static double xAxisGs;
+        private static double zAxisGs;
         
 
         public static void Main()
         {
             // Create a SerialPort for the Bluetooth module
-            SerialPort serial = new SerialPort(SecretLabs.NETMF.Hardware.Netduino.SerialPorts.COM1, 115200, Parity.None, 8, StopBits.One);
+            serial = new SerialPort(SecretLabs.NETMF.Hardware.Netduino.SerialPorts.COM1, 115200, Parity.None, 8, StopBits.One);
             // Open serial (to Bluetooth)
             serial.Open();
             // Listen for incoming data on serial (Bluetooth)
@@ -35,7 +38,7 @@ namespace Helmet
             
             // Initialize the accelerometer
             initADXL345();
-
+            start();
 
 
             // Put main thread to sleep
@@ -48,7 +51,7 @@ namespace Helmet
         public static ADXL345 initADXL345()
         {
             // Create an instance of the ADXL345 accel.
-            ADXL345 accel = new ADXL345();
+            accel = new ADXL345();
             // Ensure that we are connected to the accel
             // (this will throw an exception if the accel does not respond).
             accel.EnsureConnected();
@@ -82,8 +85,17 @@ namespace Helmet
 
         private static void readAccelerometerData(object o)
         {
-            // TODO Implement
-
+            accel.ReadAllAxis();
+            yAxisGs = accel.ScaledYAxisG;
+            xAxisGs = accel.ScaledXAxisG;
+            zAxisGs = accel.ScaledZAxisG;
+            
+            byte[] tmp;
+            if (accidentDetection.addData(yAxisGs, yAxisGs, zAxisGs))
+                tmp = DataUtil.alarm(accidentDetection.getSeverity());
+            else
+                tmp = DataUtil.accDataToJson(yAxisGs, yAxisGs, zAxisGs);
+            serial.Write(tmp, 0, tmp.Length);
         }
     }
 }
