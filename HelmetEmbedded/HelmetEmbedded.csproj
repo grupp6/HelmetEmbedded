@@ -30,6 +30,7 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
@@ -39,5 +40,11 @@
     <Reference Include="Microsoft.SPOT.Native" />
     <Reference Include="SecretLabs.NETMF.Hardware" />
     <Reference Include="SecretLabs.NETMF.Hardware.Netduino" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\LoveElectronics.Sensors.Accelerometers\LoveElectronics.Sensors.Accelerometers.csproj">
+      <Project>{80721599-B7F6-494F-93E4-165A6A98AFCF}</Project>
+      <Name>LoveElectronics.Sensors.Accelerometers</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

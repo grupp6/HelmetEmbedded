@@ -75,6 +75,7 @@ namespace Helmet
         private static void readAccelerometerData(object o)
         {
             // TODO Implement
+
         }
     }
 }
