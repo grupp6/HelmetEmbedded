@@ -15,12 +15,16 @@ namespace Helmet
         private static int accTimerPeriod = 100;
         // Timer used for reading accelerometer data
         private static Timer timer;
+        // Accelerometer manager
         private static ADXL345 accel;
+        // Bluetooth communication
         private static SerialPort serial;
         // Handles accident detection
         private static AccidentDetection accidentDetection;
         // Threshold value for accidentDetection
         private static double sumThreshold = 9;
+        
+        // Temporary variebles for accelerometer samples
         private static double yAxisGs;
         private static double xAxisGs;
         private static double zAxisGs;
@@ -41,6 +45,10 @@ namespace Helmet
             
             // Initialize the accelerometer
             initADXL345();
+            
+            // Start sampling and crash detection
+            // PLEASE NOTE! This should be done remotely, this is just a
+            // temporary solution.
             start();
 
 
@@ -88,6 +96,7 @@ namespace Helmet
 
         private static void readAccelerometerData(object o)
         {
+            // Read data from accelerometer
             accel.ReadAllAxis();
             yAxisGs = accel.ScaledYAxisG;
             xAxisGs = accel.ScaledXAxisG;
@@ -98,7 +107,7 @@ namespace Helmet
             int bufferPos;
             int maxRow;
             if (accidentDetection.addData(xAxisGs, yAxisGs, zAxisGs))
-                tmp = DataUtil.alarm(accidentDetection.getSeverity());
+                tmp = DataUtil.alarmToJson(accidentDetection.getSeverity());
             else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
             {
                 maxRow = dataBuffer.getMaxForceRow(bufferPos, sendDataFreq);

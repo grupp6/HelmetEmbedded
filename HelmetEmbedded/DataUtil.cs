@@ -17,7 +17,7 @@ namespace Helmet
             return stringToByteArray(json);
         }
 
-        public static byte[] alarm(byte severity)
+        public static byte[] alarmToJson(byte severity)
         {
             // TODO Optimize?
             string json = "";
