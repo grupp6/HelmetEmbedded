@@ -45,6 +45,7 @@
     <Reference Include="Microsoft.SPOT.Native" />
     <Reference Include="SecretLabs.NETMF.Hardware" />
     <Reference Include="SecretLabs.NETMF.Hardware.Netduino" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LoveElectronics.Sensors.Accelerometers\LoveElectronics.Sensors.Accelerometers.csproj">

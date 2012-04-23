@@ -27,7 +27,7 @@ namespace Helmet
 
         // Oversized buffer due to eliminate risk of erasing needed
         // data rows while calculating max values.
-        private static AccDataBuffer dataBuffer = new AccDataBuffer(1024);
+        private static AccDataBuffer dataBuffer = new AccDataBuffer(50);
         private static int sendDataFreq = 30;
 
         public static void Main()
@@ -93,7 +93,7 @@ namespace Helmet
             xAxisGs = accel.ScaledXAxisG;
             zAxisGs = accel.ScaledZAxisG;
             dataBuffer.addData(xAxisGs, yAxisGs, zAxisGs);
-            
+         
             byte[] tmp = null;
             int bufferPos;
             int maxRow;
