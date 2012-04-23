@@ -16,7 +16,7 @@ namespace Helmet
 
         public bool addData(double x, double y, double z)
         {
-            sum = abs(x) + abs(y) + abs(z);
+            sum = DataUtil.abs(x) + DataUtil.abs(y) + DataUtil.abs(z);
             if (sum > sumThreshold)
             {
                 severityIdx = (byte) sum;
@@ -32,11 +32,5 @@ namespace Helmet
         {
             return severityIdx;
         }
-
-        private double abs(double val)
-        {
-            return val < 0 ? -val : val;
-        }
-        
     }
 }

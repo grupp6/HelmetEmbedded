@@ -34,6 +34,7 @@
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
     <Compile Include="AccidentDetection.cs" />
+    <Compile Include="AccDataBuffer.cs" />
     <Compile Include="DataUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

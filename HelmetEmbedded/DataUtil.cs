@@ -13,6 +13,7 @@ namespace Helmet
             json += "\"accX\":" + x.ToString() + ",";
             json += "\"accY\":" + y.ToString() + ",";
             json += "\"accZ\":" + z.ToString() + "}";
+            Debug.Print(json);
             return stringToByteArray(json);
         }
 
@@ -31,6 +32,11 @@ namespace Helmet
             for (int i = 0; i < input.Length; ++i)
                 byteData[i] = (byte) input[i];
             return byteData;
+        }
+
+        public static double abs(double val)
+        {
+            return val < 0 ? -val : val;
         }
     }
 }

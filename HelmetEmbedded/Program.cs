@@ -21,11 +21,14 @@ namespace Helmet
         private static AccidentDetection accidentDetection;
         // Threshold value for accidentDetection
         private static double sumThreshold = 9;
-        private static int idod = 0;
         private static double yAxisGs;
         private static double xAxisGs;
         private static double zAxisGs;
-        
+
+        // Oversized buffer due to eliminate risk of erasing needed
+        // data rows while calculating max values.
+        private static AccDataBuffer dataBuffer = new AccDataBuffer(1024);
+        private static int sendDataFreq = 30;
 
         public static void Main()
         {
@@ -72,7 +75,7 @@ namespace Helmet
             if (timer == null)
                 timer = new Timer(readAccelerometerData, null, 0, accTimerPeriod);
             accidentDetection = new AccidentDetection(sumThreshold);
-            // TODO What is timer is already started?
+            // TODO What if timer is already started?
         }
 
         private static void serialDataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -89,13 +92,22 @@ namespace Helmet
             yAxisGs = accel.ScaledYAxisG;
             xAxisGs = accel.ScaledXAxisG;
             zAxisGs = accel.ScaledZAxisG;
+            dataBuffer.addData(xAxisGs, yAxisGs, zAxisGs);
             
-            byte[] tmp;
-            if (accidentDetection.addData(yAxisGs, yAxisGs, zAxisGs))
+            byte[] tmp = null;
+            int bufferPos;
+            int maxRow;
+            if (accidentDetection.addData(xAxisGs, yAxisGs, zAxisGs))
                 tmp = DataUtil.alarm(accidentDetection.getSeverity());
-            else
-                tmp = DataUtil.accDataToJson(yAxisGs, yAxisGs, zAxisGs);
-            serial.Write(tmp, 0, tmp.Length);
+            else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
+            {
+                maxRow = dataBuffer.getMaxForceRow(bufferPos, sendDataFreq);
+                tmp = DataUtil.accDataToJson(
+                    dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_X),
+                    dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Y),
+                    dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Z));
+            }
+                serial.Write(tmp, 0, tmp.Length);
         }
     }
 }
