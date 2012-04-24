@@ -34,7 +34,7 @@ namespace Helmet
 
         private int getIncrPos(int currentPos, int step)
         {
-            return DataUtil.mod(currentPos + step, bufferSize);
+            return Util.mod(currentPos + step, bufferSize);
         }
 
         public void addData(double x, double y, double z)

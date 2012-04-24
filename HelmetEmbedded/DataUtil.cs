@@ -3,7 +3,7 @@ using Microsoft.SPOT;
 
 namespace Helmet
 {
-    class DataUtil
+    class Util
     {
         public static byte[] accDataToJson(double x, double y, double z)
         {

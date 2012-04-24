@@ -108,11 +108,11 @@ namespace Helmet
             int maxRow;
             
             if (accidentDetection.addData(xAxisGs, yAxisGs, zAxisGs))
-                tmp = DataUtil.alarmToJson(accidentDetection.getSeverity());
+                tmp = Util.alarmToJson(accidentDetection.getSeverity());
             else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
             {
                 maxRow = dataBuffer.getMaxForceRow(bufferPos, sendDataFreq);
-                tmp = DataUtil.accDataToJson(
+                tmp = Util.accDataToJson(
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_X),
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Y),
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Z));
