@@ -22,6 +22,7 @@ namespace Helmet
             string json = "";
             json += "{\"type\":\"alarm\",";
             json += "\"severity\":" + severity.ToString() + "}";
+            
             return stringToByteArray(json);
         }
 
