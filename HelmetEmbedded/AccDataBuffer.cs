@@ -9,33 +9,41 @@ namespace Helmet
         public static int COLUMN_Y = 1;
         public static int COLUMN_Z = 2;
 
-        double[,] buffer;
+        double[][] buffer;
         int pos;
         int bufferSize;
 
         public AccDataBuffer(int bufferSize)
         {
-            buffer = new double[bufferSize, 3];
+            buffer = new double[bufferSize][];
+            for (int i = 0; i < bufferSize; ++i)
+                buffer[i] = new double[3];
             pos = 0;
             this.bufferSize = bufferSize;
         }
 
         private int getNextPos()
         {
-            return getNextPos(pos);
+            return getIncrPos(pos, 1);
         }
 
         private int getNextPos(int currentPos)
         {
-            return (currentPos + 1) % bufferSize;
+            return getIncrPos(currentPos, 1);
+        }
+
+        private int getIncrPos(int currentPos, int step)
+        {
+            return DataUtil.mod(currentPos + step, bufferSize);
         }
 
         public void addData(double x, double y, double z)
         {
             int nextPos = getNextPos();
-            buffer[nextPos, COLUMN_X] = x;
-            buffer[nextPos, COLUMN_Y] = y;
-            buffer[nextPos, COLUMN_Z] = z;
+            buffer[nextPos][COLUMN_X] = x;
+            buffer[nextPos][COLUMN_Y] = y;
+            buffer[nextPos][COLUMN_Z] = z;
+            pos = nextPos;
         }
 
         public int getPos()
@@ -45,21 +53,21 @@ namespace Helmet
 
         public double getValue(int row, int column)
         {
-            return buffer[row, column];
+            return buffer[row][column];
         }
 
-        public int getMaxForceRow(int startRow, int size)
+        public int getMaxForceRow(int endRow, int size)
         {
-            int maxRow = startRow;
+            int maxRow = endRow;
             double maxForce = 0;
             double force;
-            int i = startRow;
+            int i = getIncrPos(endRow, -size + 1);
             while (size-- > 0)
             {
                 force = vectorLength(
-                    buffer[i, COLUMN_X],
-                    buffer[i, COLUMN_Y],
-                    buffer[i, COLUMN_Z]);
+                    buffer[i][COLUMN_X],
+                    buffer[i][COLUMN_Y],
+                    buffer[i][COLUMN_Z]);
                 if (force > maxForce)
                 {
                     maxForce = force;
@@ -67,6 +75,7 @@ namespace Helmet
                 }
                 i = getNextPos(i);
             }
+            Debug.Print("endRow=" + endRow + " positions: " + deb);
             return maxRow;
         }
 
@@ -79,6 +88,5 @@ namespace Helmet
                 System.Math.Pow(z, 2))
                 , 0.5);
         }
-
     }
 }

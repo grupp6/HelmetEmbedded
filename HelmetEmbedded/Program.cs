@@ -31,7 +31,7 @@ namespace Helmet
 
         // Oversized buffer due to eliminate risk of erasing needed
         // data rows while calculating max values.
-        private static AccDataBuffer dataBuffer = new AccDataBuffer(50);
+        private static AccDataBuffer dataBuffer = new AccDataBuffer(128);
         private static int sendDataFreq = 30;
 
         public static void Main()
@@ -106,6 +106,7 @@ namespace Helmet
             byte[] tmp = null;
             int bufferPos;
             int maxRow;
+            
             if (accidentDetection.addData(xAxisGs, yAxisGs, zAxisGs))
                 tmp = DataUtil.alarmToJson(accidentDetection.getSeverity());
             else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
@@ -116,6 +117,7 @@ namespace Helmet
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Y),
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Z));
             }
+            if (tmp != null)
                 serial.Write(tmp, 0, tmp.Length);
         }
     }
