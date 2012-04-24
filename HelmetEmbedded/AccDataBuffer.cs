@@ -82,11 +82,7 @@ namespace Helmet
         private static double vectorLength(double x, double y, double z)
         {
             // x ^ 0.5 = sqrt(x)
-            return System.Math.Pow(
-                (System.Math.Pow(x, 2) +
-                System.Math.Pow(y, 2) +
-                System.Math.Pow(z, 2))
-                , 0.5);
+            return System.Math.Pow(x*x + y*y + z*z, 0.5);
         }
     }
 }
