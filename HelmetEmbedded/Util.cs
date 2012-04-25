@@ -5,6 +5,9 @@ namespace Helmet
 {
     class Util
     {
+        /// <summary>
+        /// Convert accelerometer data to json (json.org) string.
+        /// </summary>
         public static byte[] accDataToJson(double x, double y, double z)
         {
             // TODO Optimize?
@@ -16,6 +19,9 @@ namespace Helmet
             return stringToByteArray(json);
         }
 
+        /// <summary>
+        /// Convert alarm to json (json.org) string.
+        /// </summary>
         public static byte[] alarmToJson(byte severity)
         {
             // TODO Optimize?
@@ -26,6 +32,9 @@ namespace Helmet
             return stringToByteArray(json);
         }
 
+        /// <summary>
+        /// Converts a string to an ascii formatted byte array.
+        /// </summary>
         public static byte[] stringToByteArray(string input)
         {
             byte[] byteData = new byte[input.Length];
@@ -34,11 +43,17 @@ namespace Helmet
             return byteData;
         }
 
+        /// <summary>
+        /// Returns the absolute value of the specifed double.
+        /// </summary>
         public static double abs(double val)
         {
             return val < 0 ? -val : val;
         }
 
+        /// <summary>
+        /// Returns x modulo m.
+        /// </summary>
         public static int mod(int x, int m)
         {
             int r = x % m;

@@ -3,6 +3,9 @@ using Microsoft.SPOT;
 
 namespace Helmet
 {
+    /// <summary>
+    /// Contains a buffer to hold accelerometer data measurements.
+    /// </summary>
     class AccDataBuffer
     {
         public static int COLUMN_X = 0;
@@ -23,21 +26,36 @@ namespace Helmet
             this.bufferSize = bufferSize;
         }
 
+        /// <summary>
+        /// Returns the next position in the buffer. The current position in
+        /// the buffer hold the last values.
+        /// </summary>
         private int getNextPos()
         {
             return getIncrPos(pos, 1);
         }
 
+        /// <summary>
+        /// Returns the next position in the buffer relative to the specified
+        /// position.
+        /// </summary>
         private int getNextPos(int currentPos)
         {
             return getIncrPos(currentPos, 1);
         }
 
-        private int getIncrPos(int currentPos, int step)
+        /// <summary>
+        /// Returns the buffer position at step number of steps away from the specified
+        /// position.
+        /// </summary>
+        private int getIncrPos(int position, int step)
         {
-            return Util.mod(currentPos + step, bufferSize);
+            return Util.mod(position + step, bufferSize);
         }
 
+        /// <summary>
+        /// Add data to the buffer.
+        /// </summary>
         public int addData(double x, double y, double z)
         {
             int nextPos = getNextPos();
@@ -49,16 +67,27 @@ namespace Helmet
             return pos;
         }
 
+        /// <summary>
+        /// Returns the most recently written position in the buffer.
+        /// </summary>
         public int getPos()
         {
             return pos;
         }
 
+        /// <summary>
+        /// Returns a value from the buffer. Availible columns are 
+        /// COLUMN_VECTOR, COLUMN_X, COLUMN_Y, COLUMN_Z
+        /// </summary>
         public double getValue(int row, int column)
         {
             return buffer[row][column];
         }
 
+        /// <summary>
+        /// Returns the row number with the maximum measured force in the the rows 
+        /// ending in endRow and starting size number of rows before.
+        /// </summary>
         public int getMaxForceRow(int endRow, int size)
         {
             int maxRow = endRow;
@@ -78,6 +107,9 @@ namespace Helmet
             return maxRow;
         }
 
+        /// <summary>
+        /// Returns the total force.
+        /// </summary>
         private static double vectorLength(double x, double y, double z)
         {
             // x ^ 0.5 = sqrt(x)

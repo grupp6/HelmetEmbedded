@@ -31,9 +31,15 @@ namespace Helmet
 
         // Oversized buffer due to eliminate risk of erasing needed
         // data rows while calculating max values.
-        private static AccDataBuffer dataBuffer = new AccDataBuffer(128);
+        private static AccDataBuffer dataBuffer = new AccDataBuffer(256);
+        
+        // Number of measurements to wait between sending data
         private static int sendDataFreq = 30;
+
+        // ASCII character 4 (end of transmission) sent between messages
         private static byte[] END_OF_TRANSMISSION = { 4 };
+
+        // Last updated row in buffer
         private static int updatedDataRow;
 
         public static void Main()
@@ -103,6 +109,7 @@ namespace Helmet
             yAxisGs = accel.ScaledYAxisG;
             xAxisGs = accel.ScaledXAxisG;
             zAxisGs = accel.ScaledZAxisG;
+            // Insert new data in buffer
             updatedDataRow = dataBuffer.addData(xAxisGs, yAxisGs, zAxisGs);
          
             byte[] tmp = null;

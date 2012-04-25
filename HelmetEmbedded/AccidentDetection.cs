@@ -3,6 +3,9 @@ using Microsoft.SPOT;
 
 namespace Helmet
 {
+    /// <summary>
+    /// Class containing the accident detection algorithm (VERY simple).
+    /// </summary>
     class AccidentDetection
     {
         private AccDataBuffer data;
@@ -16,6 +19,9 @@ namespace Helmet
             this.threshold = threshold;
         }
 
+        /// <summary>
+        /// Detect if an accident has occured.
+        /// </summary>
         public bool detectAccident(int lastPos)
         {
             lastValue = data.getValue(lastPos, AccDataBuffer.COLUMN_VECTOR);
@@ -30,6 +36,9 @@ namespace Helmet
             }
         }
 
+        /// <summary>
+        /// Returns the severity index of the last accident.
+        /// </summary>
         public byte getSeverity()
         {
             return severityIdx;
