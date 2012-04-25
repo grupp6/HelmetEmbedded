@@ -75,7 +75,6 @@ namespace Helmet
                 }
                 i = getNextPos(i);
             }
-            Debug.Print("endRow=" + endRow + " positions: " + deb);
             return maxRow;
         }
 
