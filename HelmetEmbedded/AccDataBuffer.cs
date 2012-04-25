@@ -8,6 +8,7 @@ namespace Helmet
         public static int COLUMN_X = 0;
         public static int COLUMN_Y = 1;
         public static int COLUMN_Z = 2;
+        public static int COLUMN_VECTOR = 3;
 
         double[][] buffer;
         int pos;
@@ -17,7 +18,7 @@ namespace Helmet
         {
             buffer = new double[bufferSize][];
             for (int i = 0; i < bufferSize; ++i)
-                buffer[i] = new double[3];
+                buffer[i] = new double[4];
             pos = 0;
             this.bufferSize = bufferSize;
         }
@@ -43,6 +44,7 @@ namespace Helmet
             buffer[nextPos][COLUMN_X] = x;
             buffer[nextPos][COLUMN_Y] = y;
             buffer[nextPos][COLUMN_Z] = z;
+            buffer[nextPos][COLUMN_VECTOR] = vectorLength(x, y, z);
             pos = nextPos;
         }
 
@@ -64,10 +66,7 @@ namespace Helmet
             int i = getIncrPos(endRow, -size + 1);
             while (size-- > 0)
             {
-                force = vectorLength(
-                    buffer[i][COLUMN_X],
-                    buffer[i][COLUMN_Y],
-                    buffer[i][COLUMN_Z]);
+                force = buffer[i][COLUMN_VECTOR];
                 if (force > maxForce)
                 {
                     maxForce = force;
