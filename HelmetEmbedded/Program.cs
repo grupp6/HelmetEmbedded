@@ -34,6 +34,7 @@ namespace Helmet
         private static AccDataBuffer dataBuffer = new AccDataBuffer(128);
         private static int sendDataFreq = 30;
         private static byte[] END_OF_TRANSMISSION = { 4 };
+        private static int updatedDataRow;
 
         public static void Main()
         {
@@ -83,7 +84,7 @@ namespace Helmet
         {
             if (timer == null)
                 timer = new Timer(readAccelerometerData, null, 0, accTimerPeriod);
-            accidentDetection = new AccidentDetection(sumThreshold);
+            accidentDetection = new AccidentDetection(dataBuffer, sumThreshold);
             // TODO What if timer is already started?
         }
 
@@ -102,17 +103,16 @@ namespace Helmet
             yAxisGs = accel.ScaledYAxisG;
             xAxisGs = accel.ScaledXAxisG;
             zAxisGs = accel.ScaledZAxisG;
-            dataBuffer.addData(xAxisGs, yAxisGs, zAxisGs);
+            updatedDataRow = dataBuffer.addData(xAxisGs, yAxisGs, zAxisGs);
          
             byte[] tmp = null;
-            int bufferPos;
             int maxRow;
-            
-            if (accidentDetection.detectAccident(xAxisGs, yAxisGs, zAxisGs))
+
+            if (accidentDetection.detectAccident(updatedDataRow))
                 tmp = Util.alarmToJson(accidentDetection.getSeverity());
-            else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
+            else if (updatedDataRow % sendDataFreq == 0)
             {
-                maxRow = dataBuffer.getMaxForceRow(bufferPos, sendDataFreq);
+                maxRow = dataBuffer.getMaxForceRow(updatedDataRow, sendDataFreq);
                 tmp = Util.accDataToJson(
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_X),
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Y),

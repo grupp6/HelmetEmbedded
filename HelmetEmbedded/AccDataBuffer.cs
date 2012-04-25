@@ -38,7 +38,7 @@ namespace Helmet
             return Util.mod(currentPos + step, bufferSize);
         }
 
-        public void addData(double x, double y, double z)
+        public int addData(double x, double y, double z)
         {
             int nextPos = getNextPos();
             buffer[nextPos][COLUMN_X] = x;
@@ -46,6 +46,7 @@ namespace Helmet
             buffer[nextPos][COLUMN_Z] = z;
             buffer[nextPos][COLUMN_VECTOR] = vectorLength(x, y, z);
             pos = nextPos;
+            return pos;
         }
 
         public int getPos()
