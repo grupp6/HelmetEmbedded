@@ -5,21 +5,23 @@ namespace Helmet
 {
     class AccidentDetection
     {
-        private double sumThreshold;
-        private double sum;
+        private AccDataBuffer data;
+        private double threshold;
+        private double lastValue;
         private byte severityIdx;
         
-        public AccidentDetection(double sumThreshold)
+        public AccidentDetection(AccDataBuffer data, double threshold)
         {
-            this.sumThreshold = sumThreshold;
+            this.data = data;
+            this.threshold = threshold;
         }
 
-        public bool addData(double x, double y, double z)
+        public bool detectAccident(int lastPos)
         {
-            sum = Util.abs(x) + Util.abs(y) + Util.abs(z);
-            if (sum > sumThreshold)
+            lastValue = data.getValue(lastPos, AccDataBuffer.COLUMN_VECTOR);
+            if (lastValue > threshold)
             {
-                severityIdx = (byte) sum;
+                severityIdx = (byte) lastValue;
                 return true;
             }
             else

@@ -108,7 +108,7 @@ namespace Helmet
             int bufferPos;
             int maxRow;
             
-            if (accidentDetection.addData(xAxisGs, yAxisGs, zAxisGs))
+            if (accidentDetection.detectAccident(xAxisGs, yAxisGs, zAxisGs))
                 tmp = Util.alarmToJson(accidentDetection.getSeverity());
             else if ((bufferPos = dataBuffer.getPos()) % sendDataFreq == 0)
             {
