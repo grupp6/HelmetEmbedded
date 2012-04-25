@@ -33,6 +33,7 @@ namespace Helmet
         // data rows while calculating max values.
         private static AccDataBuffer dataBuffer = new AccDataBuffer(128);
         private static int sendDataFreq = 30;
+        private static const byte[] END_OF_TRANSMISSION = { 4 };
 
         public static void Main()
         {
@@ -118,7 +119,10 @@ namespace Helmet
                     dataBuffer.getValue(maxRow, AccDataBuffer.COLUMN_Z));
             }
             if (tmp != null)
+            {
                 serial.Write(tmp, 0, tmp.Length);
+                serial.Write(END_OF_TRANSMISSION, 0, END_OF_TRANSMISSION.length);
+            }
         }
     }
 }
